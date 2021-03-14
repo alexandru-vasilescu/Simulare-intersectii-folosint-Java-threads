@@ -1,0 +1,181 @@
+Vasilescu Alexandru Madalin 331CB
+
+La rezolvarea cerintelor am folosit scheletul dat. Am modificat doar ce este mentionat in README, nimic mai mult.
+
+Cerinta 1
+In ReaderHandleFactory am initializat intersectia din Main ca SimpleIntersection desi nu am folosit-o pentru ca nu am avut nevoie.
+Am rezolvat cerinta in clasa IntersectionHandlerFactory la case-ul pentru simple_semaphore.
+Aici afisez fiecare masina cand ajunge intersectie folosind id-ul acesteia.
+Fiecare thread apoi va avea un sleep corespunzator waitingTime-ului.
+Apoi fiecare masina, cand se va termina sleepul va afisa un mesaj care arata ca s-a terminat sleepul si continua deplasarea.
+
+Cerinta 2
+In ReaderHandleFactory am initializat intersectia din Main ca SimpleIntersection si am setat variabilele acestei intersectii.
+Setez semaforul cu numarul de maxim de masini care poate trece o data prin intersectie.
+Setez numarul maxim de masini (MaxNumberOfCars) si durata de a traversa intersectia(waitingTime)
+
+In clasa SimpleIntersection am 3 variabile.
+maxNumberOfCars imi retine numarul maxim de masini din intersectie.
+waitingTime imi retine timpul pe care o masina trebuie sa il astepte inainte de a iesi din intersectie dupa ce a intrat.
+Un semafor pentru a nu lasa mai multe masini sa intre in intersectie concomitent.
+Singurele metode din SimpleIntersection sunt getter si setter pentru fiecare variabila.
+
+In IntersectionHandleFactory am rezolvat cerinta la case-ul pentru simple_n_roundabout.
+Cand ajunge o masina in intersectie afisez acest lucru.
+Fiecare masina incearca sa intre verificand semaforul. De fiecare data cand intra o masina trebuie sa dea acquire.
+Acest lucru impiedica masini sa intre daca intersectia are deja numarul maxim de masini.
+Cand o masina intra in intersectia afiseaza un mesaj corespunzator. Apoi da sleep  corespunzator waitingTime-ului intersectiei.
+Dupa asteptare masina afiseaza un mesaj corespunzator iesirii din intersectie si iese.
+Iesirea masinii din intersectie este marcata printr-un release() pe semafor.
+
+Cerinta 3
+In ReaderHandleFactory am initializat intersectia ca un CarRoundabout(o clasa creata de mine pentru taskurile 3,4 si 5)
+Setez variabilele intersectiei conform parametrilor primiti la input.
+
+In clasa CarRoundabout am mai multe varibile care retin informatii depsre intersectie precum si metode de prelucrare a acestora.
+Variabila numberOfLanes retine numarul sensurilor in intersectie, primita de la input.
+Variabila waitingTime retine timpul de asteptare al unei masini in intersectie, primit de la input.
+Varianila numberOfCars retine numarul maxim de masini de pe fiecare sens care poate intra in intersectie.
+La cerinta aceasta este setat la 1.
+Am o lista de semafoare, cate un semafor pentru fiecare sens de mers.
+Am o lista de liste de integer care reprezinta fiecare sens de mers. 
+Fiecare sens de mers ar reprezenta o lista cu id-urile masinilor din acel sens de mers.
+Am o bariera folosita pentru a astepta toate masinile sa ajunga in intersectie(folosita doar la cerinta 4).
+Am o bariera folosita pentru a astepta toate masinile din intersectie sa iasa din intersectie(folosita doar la cerinta 4).
+Barrier este setata peste toate masinile care ajung in intersectie adica carsNo.
+InnerBarrier este setata peste cate masini pot intra o data in intersectie adica numberOfLanes*numberOfCars.
+Ca metode am getter si setter pentru aproape toti parametrii.
+Setteri pentru lista de semafoare si sensuri de mers i-am modificat sa initializeze listele si sa adauge elemente de la 0.
+Lista de semafoare si sensuri sunt liste sincronizate (am folosit Collections.synchronizedList).
+Metoda addCar adauga masini in lista corespunzatoare sensului de mers.
+Metoda removeCar sterge masina cu id-ul dat din lista sensului de mers.
+
+In IntersectionHandlerFactory am rezolvat cerinta la case-ul simple_strict_1_car_roundabout.
+Afisez un mesaj cand masina ajunge la intersectie. Adaug masina in lista corespunzatoare directiei din care vine.
+Fiecare masina verifica pentru fiecare directie daca a ajuns cel putin o masina in intersectie.
+Cand a ajuns cel putin o masina pe fiecare directie se incearca intrarea in intersectie.
+Folosind semaforul corespunzator intersectiei se verifica daca se poate intra in intersectie.
+Se afiseaza un mesaj cand masina poate intra in intersectie.
+Dupa ce o masina intra in intersectie aceasta este eliminata din lista de masini de pe sensul ei de mers.
+Se asteapta timpul necesar masinii sa iasa din intersectie printr-un sleep.
+Se afiseaza un mesaj cand masina iese din intersectie.
+Se anunta semaforul ca o alta masina poate intra din acel sens de mers printr-un release().
+
+Cerinta 4
+In ReaderHandleFactory am initializat intersectia ca un CarRoundabout.
+Am setat variabilele din intersectie conform parametrilor primiti.
+NumberOfCars se seteaza la aceasta cerinta cu valoarea primita la input, fata de cerinta 3 cand era mereu 1.
+Clasa CarRoundabout este descrisa la Cerinta 3. In cadrul cerintei se folosesc si cele 2 bariere.
+In IntersectionHandlerFactory am rezolvat cerinta in cadrul case-ului de la simple_strict_x_car_roundabout.
+Am initializat innerBarrier cu numarul de masini * numarul de sensuri de mers.
+Masinile afiseaza un mesaj cand ajung la intersectie.
+Se apeleaza wait pe barrier pentru a astepta toate masinile sa ajunga la intersectie.
+Se incearca intrarea in intersectie. Se afiseaza un mesaj cand o masina poate intra in intersectie.
+Se adauga masina in lista sensului de mers corespunzator.
+Se verifica si se asteapta ca pe toate sensurile de mers sa intre toate masinile (numberOfCars).
+Se afiseaza un mesaj cand masina intra in intersectie.
+Se asteapta timpul necesar masinii sa paraseasca intersectia printr-un sleep.
+Se afiseaza un mesaj cand masina iese din intersectie.
+Se elimina masina din lista sensului de mers.
+Folosint innerBarrier se asteapta ca toate masinile care au intrat in intersectie sa iasa din intersectie.
+Se anunta semaforul ca alt set de masini poate intra in intersectie.
+
+Cerinta 5
+In ReaderHandleFactory am initializat intersectia ca un CarRoundabout.
+Am setat variabilele din intersectie conform parametrilor primiti.
+NumberOfCars se seteaza la aceasta cerinta cu valoarea primita la input, fata de cerinta 3 cand era mereu 1.
+Clasa CarRoundabout este descrisa la Cerinta 3.
+In IntersectionHandlerFactory am rezolvat cerinta in cadrul case-ului de la simple_max_x_car_roundabout.
+Se asteapta ca masina sa ajunga in intersectie waitingTimeul ei. 
+Se afiseaza mesaj cand masina ajunge la intersectie.
+Se adauga masina in lista corespunzatoare sensului ei de mers.
+Se incearca intrarea in intersectie.
+Se afiseaza mesaj cand masina intra in intersectie.
+Se elimina masina din lista corespunzatoare senului ei de mers.
+Se asteapta timpul necesar unei masini sa iasa din intersectie.
+Se afiseaza mesaj cand masina iese din intersectie.
+Se anunta semaforul ca o alta masina poate intra in intersectie.
+
+Cerinta 6
+In ReaderHandleFactory am initializat intersectia ca un PriorityIntersection.
+Am setat variabilele din intersectie conform parametrilor primiti.
+Priority intersection contine variabile pentru a retine detalii despre masiniile din intersectie si metode care modificia variabilele.
+Variabila numberOfCarsWithPriority retine numarul masinilor cu prioritate.
+Variabila numberOfCarsWithoutPriority retine numarul masinilor fara prioritate.
+Variabila carsInIntersection retine cate masini sunt in intersectie la un moment de timp.
+Este de tip AtomicInteger pentru a fi sincronizata intre threaduri.
+Variabila carsWaiting este o coada sincronizata care imi retine masinile care asteapta sa intre in intersectie.
+Metodele sunt reprezentate in mare parte de Getter si Setter.
+Metoda addCar adauga o masina in coada dupa iD.
+Metoda enterIntersection afiseaza un mesaj ca prima masina din coada intra in intersectie si elimina prima masina din coada.
+In IntersectionHandlerFactory am rezolvat cerinta in cadrul case-ului de la priority_intersection.
+Se asteapta ca masina sa ajunga in intersectie waitingTimeul ei. 
+Se verifica prioritatea masinii. 
+Daca are prioritate 1 adica nu are prioritate in intersectie se afiseaza un mesaj cand ajunge in intersectie.
+Se adauga masina in coada. Se verifica si se asteapta sa nu fie nici o masina cu prioritate in intersectie.
+Se elimina din coada si se afiseaza mesajul de intrare in intersectie.
+Daca are prioritate mai mare de 1 se incrementeaza numarul de masini din intersectie.
+Se afiseaza un mesaj ca masina cu prioritate a intrat in intersectie.
+Se asteapta 2 secunde
+Se afiseaza un mesaj ca masina cu prioritate a iesit din intersectie.
+Se decrementeaza numarul de masini din intersectie.
+
+Cerinta 7
+In ReaderHandleFactory am initializat intersectia ca un Crosswalk.
+Am initializat pedestrians conform parametrilor primiti de la input.
+Setez variabilele din intersectie.
+Clasa Crosswalk este o clasa creata de mine.
+Variabila isGreen imi spune daca la semafor ar trebui sa fie green sau red.
+Lista sincronizata de boolean printed. Lista are lungimea numarului de masini. 
+Fiecare masina are un element din vectorul printed care arata daca a afisat deja mesajul anterior sau nu.
+Ca metode am Getter si Setter.
+SetPrinted initializeaza lista de booleni si adauga false la fiecare variabila.
+InvertedPrinted seteaza fiecare valoare din printed cu complementul ei(true->false si false->true).
+
+In Clasa Pedestrians am facut urmatoarele modificari:
+Cand pietonii trebuie sa treaca am setat valoare lui isGreen din intersectie la false si am inversat valorile verctorului printed.
+Dupa ce pietonii au trecut am setat valoare lui isGreen din intersectie la true si am inversat valorile vectorului printed.
+
+In IntersectionHandlerFactory am rezolvat cerinta in cadrul case-ului de la crosswalk.
+Se executa cat timp threadul cu pietoni nu a terminat.
+Se verifica daca s-a afisat deja mesajul. Daca nu s-a afisat deja, se afiseaza un mesaj cu culoarea semaforului.
+Se schimba valoare din vectorul printed corespunzator masinii la true.
+
+Cerinta 8
+In ReaderHandleFactory am initializat intersectia ca un Maintenance.
+Am setat variabilele din intersectie conform parametrilor primiti.
+Clasa Maintenance am creat-o eu pentru rezolvarea cerintei.
+Variabila x retine cate masini pot trece o data de pe un sens de mers.
+Variabila waitingLane retine ce sens de mers trebuie sa astepte. Initial merg masinile de pe sensul 0 deci sensul 1 asteapta.
+Variabila semaphoreForOne indica daca masinile de pe sensul 1 pot trece sau nu. Initial este 0 deoarece pot trece doar masini de pe 0.
+Variabila semaphoreForZero indica daca masinile de pe sensul 0 pot trece. Initial este x pentru ca pot trece x masini.
+Variabila barrier este initializata cu numarul de masini care pot trece adica x.
+Ca metode am doar Getter si Setter.
+In IntersectionHandlerFactory am rezolvat cerinta in cadrul case-ului de la simple_maintenance.
+Se afiseaza un mesaj cand masinile ajung la bottleneck.
+Am impartit sensurile de mers cu un if.
+Si pe ramura de if si pe ramura de else se face acelasi lucru doar ca semafoarele folosite sunt diferite.
+Verific daca se poate intra intersectie cu un acquire pe semaforul respectiv sensului de mers.
+Afisez un mesaj de trecere a bottleneckului. 
+Folosesc o bariera pentru a astepta ca toate masinile care pot trece sa treaca.
+Instiintez celalalt semafor ca pot trece masini din celalalt sens de mers.
+
+Cerinta 10
+In ReaderHandleFactory am initializat intersectia ca un Railroad.
+Am setat variabilele din intersectie conform parametrilor primiti.
+Clasa Railroad am creat-o eu pentru rezolvarea cerintei.
+Variabila barrier initializata cu numarul de masini din intersectie.
+Variabila lanes este o lista cu cozile masinilor din intersectie. Fiecare sens de mers reprezinta alta lista.
+Nu am vazut ca pot fi doar 2 sensuri de mers cand am rezolvat asa ca am creat o varianta generala cu oricate sensuri de mers.
+Ca metode am Getter si Setter pentru variabile.
+Metoda addLanes imi adauga un sens de mers la lista.
+Metoda addCar imi adauga o masina la o coada corespunzatoare sensului de mers.
+Metoda getFirstCar sincronizata imi afiseaza un mesaj cand prima masina din coada a trecut de intersectie.
+Metoda imi si scoate capul cozii la fiecare afisare.
+In IntersectionHandlerFactory am rezolvat cerinta in cadrul case-ului de la railroad.
+Verific daca am initializat sensul pe care vine masina in intersectie.
+Afisez un mesaj ca masina a ajuns la intersectie si adaug masina in coada corespunzatoare sensului pe care a venit.
+Folosesc o bariera pentru a astepta toate masinile sa ajunga in intersectie.
+Masina cu id-ul 0 afiseaza un mesaj ca a trecut trenul
+Folosesc o bariera pentru a astepta masina cu id-ul 0.
+Apelez metoda getFirstCar pentru a afisa mesajul de trecere a intersectiei pentru toate masinile din coada.
